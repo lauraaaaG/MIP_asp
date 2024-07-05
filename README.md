@@ -1,80 +1,107 @@
-# Introduction
+# Forest Management, Logistics, and Process Production Smart Contracts
 
-These smart contracts are designed to provide access to a blockchain system, ensuring that the Material Impact Passport for wooden substances can be verified and certified at every stage. To achieve this, a series of smart contracts have been developed, each targeting a specific aspect of the value chain. These contracts are tailored for the company Bonzano, ensuring that all information related to forest management, logistics, and production processes are accurately tracked and verified.
+## Overview
 
-The primary purpose of these smart contracts is to ensure compliance with social sustainability indicators as per OECD and PEFC guidelines, providing a transparent and immutable record of all operations. This ensures that every stakeholder in the supply chain can trust the data and certifications provided, ultimately supporting sustainability and accountability.
+These smart contracts are designed to manage and track various aspects of forest management, logistics, and production processes. The contracts ensure compliance with social sustainability indicators from OECD and PEFC Guidelines and facilitate interactions between manufacturers, wood suppliers, logistics operators, and regulatory bodies.
 
-Below are the details of the smart contracts created for each part of the value chain:
+## Forest Management Smart Contract
 
-# Smart Contract for Forest_Management
+### Description
+The Forest Management contract is designed to manage and track forest resources and ensure compliance with social sustainability indicators.
 
-Manages and tracks forest resources and ensures compliance with social sustainability indicators (from OECD and PEFC Guidelines).
+### Key Components
 
-### Wood Mix
-- `mapping woodMix`: initialized in the constructor function.
+- **Wood Mix**: A mapping `woodMix`, initialized in the constructor function.
   - Types of wood used to produce a panel.
   - Types of wood respective percentages.
+  - Public getter function `getWoodPercentage` to retrieve the percentage of a specified wood type.
 
-#### Public Getter Function
-- `getWoodPercentage`: used to retrieve the percentage of a specified wood type.
+- **Compliance Criteria**: An array `complianceCriteria` stores a list of compliance standards, initialized in the constructor function.
+  - Public getter function `getComplianceCriterion` to retrieve a specific compliance criterion by its index.
 
-### Compliance Criteria
-- `array complianceCriteria`: used to store a list of compliance standards, populated with social sustainability indicators, initialized in the constructor function.
-- `getComplianceCriterion`: public getter function used to retrieve a specific compliance criterion by its index.
+- **Weekly Poplar Supply**: A constant `weeklyPoplarSupply`, representing the weekly supply of poplar wood (in tons).
 
-# SMART CONTRACT – Logistics
+- **Wood Source Percentages**: A mapping `woodSourcePercentage`, initialized in the constructor function, stores the percentage of wood sourced from different countries.
+  - Public getter function `getWoodSourcePercentage` to retrieve the percentage of wood sourced from a specified country.
 
-Manages and tracks logistics-related information, including the annual sales volume of products, details about packaging materials, and transportation means along with their specific container details for the different destinations.
+- **Transport Information**: `Transport` struct:
+  - Transport type.
+  - Fuel type.
+  - Capacity (in tons).
+  - Public getter function `getTransportInfo` to retrieve all the information related to transports.
 
-### Metrics Tracked
+- **NUTS Codes**: An array `NUTSCodes` stores NUTS codes of the forests from which the wood comes from.
+  - Initialized in the constructor function.
+  - Public getter function `getNUTSCodes` to return all the codes.
 
-#### Annual Sales Volume
-- `constant annualSalesVolume`: set to represent the volume of sold panels per year (in m³).
+### Usage
+This contract should be deployed by the manufacturer (Bonzano) and other wood suppliers to update wood composition, origin, means of transport, and to ensure compliance with regulatory standards. Regulatory bodies and auditors can interact with it to verify adherence to compliance regulations.
 
-#### Packaging Materials Tracking
-- `struct Packaging`:
+## Logistics Smart Contract
+
+### Description
+The Logistics contract manages and tracks logistics-related information, including annual sales volume, packaging materials, and transportation details.
+
+### Key Components
+
+- **Annual Sales Volume**: A constant `annualSalesVolume` representing the volume of sold panels per year (in m³).
+
+- **Packaging Materials Tracking**: `Packaging` struct:
   - Typology (type of material).
   - Quantity (in kilograms).
   - Recyclability percentage.
-- `mapping packaging`: initialized in the constructor function, used to store and retrieve packaging details based on material name.
+  - A mapping `packaging`, initialized in the constructor function, stores and retrieves packaging details based on material name.
 
-#### Means of Transport
-- `struct Transport`:
+- **Means of Transport**: `Transport` struct:
   - Typology (type of transport).
   - Fuel type.
   - Capacity.
-  - Container details for specific destinations (number of containers and distance travelled).
-- Each `Transport` struct contains a nested mapping to store `ContainerDetail` structs for the different destinations.
-- `struct ContainerDetail`: stores the number of containers and the distance travelled (in km) for each destination.
-- `mapping transports`: initialized in the constructor function, used to store and retrieve transport details based on transport typology.
+  - Container details for specific destinations (number of containers and distance traveled).
+  - Nested mapping to store `ContainerDetail` structs for different destinations.
+  - `ContainerDetail` struct stores the number of containers and the distance traveled (in km) for each destination.
+  - Mapping `transports` initialized in the constructor function stores and retrieves transport details based on transport typology.
+  - `setContainerDetails` function sets the number of containers and distance for specific transport and destination pairs.
+  - `getContainerDetails` function retrieves the container details for a specific transport and destination.
 
-#### Internal Function
-- `setContainerDetails`: used internally to set the number of containers and distance for specific transport and destination pairs.
+### Usage
+This contract should be deployed by logistics operators to set details of containers for specific transport types and destinations, and packaging materials used.
 
-#### Public Getter Function
-- `getContainerDetails`: allows to retrieve the container details for a specific transport and destination.
+## Process Production Smart Contract
 
-# Smart contract for Process and Production
+### Description
+The Process Production contract manages and tracks various aspects of the production process, including annual production volume, energy consumption, adhesive usage, paint usage, and compliance with social sustainability indicators.
 
-Manages and tracks various aspects of a production process, including the annual production volume, energy consumption, adhesive usage, paint usage, and compliance with social sustainability indicators (from OECD and PEFC Guidelines).
+### Key Components
 
-### Metrics Tracked
+- **Annual Production Volume**: A constant `annualProductionVolume` stores the annual production volume (in m³).
 
-#### Annual Production Volume
-- `constant annualProductionVolume`: defined to store the annual production volume (in m³).
+- **Energy Consumption**:
+  - Electrical energy consumption per unit of production (in KWh per m³).
+  - Thermal energy consumption per unit of production (in KWh per m³).
+  - Methane consumption for producing thermal energy (in standard m³ per m³).
 
-#### Energy Consumption
-- Electrical energy consumption per unit of production (in KWh per m³).
-- Thermal energy consumption per unit of production (in KWh per m³).
-- Methane consumption for producing thermal energy (in standard m³ per m³).
+- **Adhesive Usage**:
+  - Typology of adhesive used.
+  - Quantity of adhesive used (in tons per m³).
 
-#### Adhesive Usage
-- Typology of adhesive used.
-- Quantity of adhesive used (in tons per m³).
+- **Paint Usage**: A variable `paintUsage` stores the amount of paint used per unit of production (in l/ m³).
 
-#### Paint Usage
-- `variable paintUsage`: defined to store the amount of paint used per unit of production (in l/m³).
+- **Compliance Criteria**: An array `complianceCriteria` stores a list of compliance standards, initialized in the constructor function.
+  - Public getter function `getComplianceCriterion` retrieves a specific compliance criterion by its index.
 
-### Compliance Criteria
-- `array complianceCriteria`: used to store a list of compliance standards, populated with social sustainability indicators, initialized in the constructor function.
-- `getComplianceCriterion`: public getter function provided to retrieve a specific compliance criterion by its index.
+### Usage
+This contract should be deployed by process and production operators in the manufacturing company (Bonzano) to manage and update production-related data of the panels and ensure compliance with regulatory standards. Regulatory bodies and auditors can interact with it to verify and audit the production data for compliance and performance evaluation.
+
+## Deployment and Interaction
+
+These contracts are designed to be deployed and interacted with by relevant stakeholders, including manufacturers, wood suppliers, logistics operators, and regulatory bodies. Each contract provides public getter functions to retrieve necessary data and ensure transparency and compliance with established guidelines.
+
+### Example Interactions
+
+- **Forest Management**: Update wood composition and origin, track transport information, and ensure compliance with social sustainability indicators.
+- **Logistics**: Set and retrieve packaging material details, manage transport and container details for different destinations.
+- **Process Production**: Track production volume, energy consumption, adhesive and paint usage, and compliance with social sustainability indicators.
+
+## Conclusion
+
+These smart contracts provide a robust framework for managing and tracking forest management, logistics, and production processes, ensuring compliance with social sustainability standards and facilitating transparent interactions between stakeholders.
