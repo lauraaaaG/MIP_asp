@@ -3,19 +3,19 @@ pragma solidity ^0.8.0;
 
 contract Logistics {
 
-    uint256 public constant annualSalesVolume = 21000; // Volume di pannelli venduti per anno in m^3
+    uint256 public annualSalesVolume; // Volume of sold panels per year (in m^3/year)
  
-    // Strutture per il packaging
+    // Struct for packaging
     struct Packaging {
         string typology;
         uint256 quantity; //kg
         uint256 riciclability_percentage;
     }
  
-    // Dizionario di packaging
+    // Packaging mapping
     mapping(string => Packaging) public packaging;
  
-    // Strutture per i mezzi di trasporto
+    // Struct for means of transport
     struct Transport {
         string typology;
         string fuel;
@@ -28,16 +28,19 @@ contract Logistics {
         uint256 distance; // in km
     }
  
-    // Dizionario di mezzi di trasporto
+    // Means of transport mapping
     mapping(string => Transport) public transports;
  
     constructor() {
-        // Inizializzazione dei packaging
-        packaging["materiale 1"] = Packaging("Polyester", 17000, 100);
-        packaging["materiale 2"] = Packaging("Polypropilen", 15000, 100);
-        packaging["materiale 3"] = Packaging("Wood", 700, 100);
+
+        annualSalesVolume = 21000; //in mc/year
+
+        // Initialization of packaging
+        packaging["material 1"] = Packaging("Polyester", 17000, 100);
+        packaging["material 2"] = Packaging("Polypropilen", 15000, 100);
+        packaging["material 3"] = Packaging("Wood", 700, 100);
  
-        // Inizializzazione dei mezzi di trasporto
+        // Initialization of means of transport
         transports["wheel"].typology = "Truck";
         transports["wheel"].fuel = "Diesel";
         transports["wheel"].capacity = 24;
@@ -59,6 +62,11 @@ contract Logistics {
         setContainerDetails("container boat", "UK", 178, 221);
     }
  
+    // Functions to get the annual Sales volume
+    function getAnnualSalesVolume() public view returns (uint256) {
+        return annualSalesVolume;
+    }
+
     function setContainerDetails(string memory transport, string memory country, uint256 containers, uint256 distance) internal {
         transports[transport].details[country] = ContainerDetail(containers, distance);
     }
