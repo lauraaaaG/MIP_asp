@@ -7,7 +7,7 @@ contract Forest_Management {
   string[] public complianceCriteria;
 
   // Weekly poplar supply
-  uint256 public weeklyPoplarSupply = 2500; // in tons
+  uint256 public weeklyPoplarSupply; // in tons per week
 
   // Percentage of wood from different countries
   mapping(string => uint256) public woodSourcePercentage;
@@ -25,6 +25,9 @@ contract Forest_Management {
   string[] public NUTSCodes;
 
       constructor() {
+
+        weeklyPoplarSupply = 2500; // in tons per week
+
         // Initialization of woodMix
         woodMix["poplar"] = 75;
         woodMix["fir tree"] = 25;
@@ -59,6 +62,11 @@ contract Forest_Management {
         NUTSCodes.push("HU332");
         NUTSCodes.push("HU331");
         NUTSCodes.push("HU321");
+    }
+
+    // Function to get the weekly poplar supply
+    function getweeklyPoplarSupply() public view returns (uint256) {
+        return weeklyPoplarSupply;
     }
 
       // Function to get the % of the wood species
